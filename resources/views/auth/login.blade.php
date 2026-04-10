@@ -72,3 +72,61 @@
         </div>
     </div>
 </x-layout>
+
+
+<!-- 
+
+    public function calculateAge(Request $request)
+{
+    $request->validate([
+        'dat' => 'required|date|before:today',
+    ]);
+
+    $bday = explode('-', $request->dat);
+    $birthYear = (int)$bday[0];
+    $birthMonth = (int)$bday[1];
+    $birthDay = (int)$bday[2];
+
+    $currentYear = (int)date('Y');
+    $currentMonth = (int)date('m');
+    $currentDay = (int)date('d');
+
+    $years = $currentYear - $birthYear;
+    $months = $currentMonth - $birthMonth;
+    $days = $currentDay - $birthDay;
+
+    if ($days < 0) {
+        $months--;
+        
+        $prevMonth = $currentMonth - 1;
+        $yearOfPrevMonth = $currentYear;
+
+        if ($prevMonth == 0) {
+            $prevMonth = 12;
+            $yearOfPrevMonth--;
+        }
+
+        if ($prevMonth == 4 || $prevMonth == 6 || $prevMonth == 9 || $prevMonth == 11) {
+            $days += 30;
+        } elseif ($prevMonth == 2) {
+            if (($yearOfPrevMonth % 4 == 0 && $yearOfPrevMonth % 100 != 0) || ($yearOfPrevMonth % 400 == 0)) {
+                $days += 29;
+            } else {
+                $days += 28;
+            }
+        } else {
+            $days += 31;
+        }
+    }
+
+    if ($months < 0) {
+        $years--;
+        $months += 12;
+    }
+
+    return view('test', [
+        'years' => $years, 
+        'months' => $months, 
+        'days' => $days
+    ]);
+} -->

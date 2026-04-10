@@ -9,16 +9,15 @@
     <form action="/test" method="POST">
         @csrf
         <label for="dat">Birth Date:</label>
-        <input type="date" id="dat" name="dat" required value="{{ old('dat') }}">
-        @error('dat')
-            <div style="color: red;">{{ $message }}</div>
-        @enderror
+        <input type="date" id="dat" name="dat" >
+       
         
         <button type="submit">Calculate Age</button>
     </form>
 
-    @if(isset($years) && isset($months))
-        <h2>You are {{ $years }} years and {{ $months }} months old.</h2>
-    @endif
+    @if(isset($years) && isset($months) && isset($days))
+        <h2>You are {{ $years }} years and {{ $months }} months {{$days}}  days old.</h2>
+        @endif
+    
 </body>
 </html> 

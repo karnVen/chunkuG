@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Chirp;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // Add this for security checks
-use Carbon\Carbon;
 
 class ChirpController extends Controller
 {
@@ -73,18 +72,62 @@ class ChirpController extends Controller
         return view('test');
     }
 
-    public function calculateAge(Request $request)
-    {
-        $request->validate([
-            'dat' => 'required|date|before:today',
-        ]);
+    
+public function calculateAge(Request $request)
+{
+    
+    $birthDate = $request->dat; 
+    $today     = date('Y-m-d');
 
-        $birthDate = Carbon::parse($request->dat);
-        $now = Carbon::now();
+    
+    $birth = explode('-', $birthDate);
+    $now   = explode('-', $today);
 
-        $years = $birthDate->diffInYears($now);
-        $months = $birthDate->diffInMonths($now) % 12;
+    $bYear  = (int)$birth[0];
+    $bMonth = (int)$birth[1];
+    $bDay   = (int)$birth[2];
 
-        return view('test', compact('years', 'months'));
+    $tYear  = (int)$now[0];
+    $tMonth = (int)$now[1];
+    $tDay   = (int)$now[2];
+
+   
+    $years  = $tYear - $bYear;
+    $months = $tMonth - $bMonth;
+    $days   = $tDay - $bDay;
+
+    
+    if ($days < 0) {
+        $months--; 
+        
+        
+        $daysInMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        
+        if ($tYear % 4 == 0) { $daysInMonths[2] = 29; }
+
+        
+        $prevMonth = $tMonth - 1;
+        if ($prevMonth == 0) { $prevMonth = 12; }
+
+        $days = $days + $daysInMonths[$prevMonth];
     }
+
+   
+    if ($months < 0) {
+        $years--;      
+        $months += 12; 
+    }
+
+    return view('test', compact('years', 'months','days'));
+    
+
+    // return [
+    //     'years'  => $years,
+    //     'months' => $months,
+    //     'days'   => $days
+    // ];
+}
+
+
 }
